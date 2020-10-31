@@ -1,4 +1,5 @@
-## Angular 10 Test Task
+## Angular Learning Management Syaytem
+
 ### Installation:
 If you are using Docker  
 ```docker-compose up -d -build```  
