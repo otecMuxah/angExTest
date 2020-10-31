@@ -1,4 +1,4 @@
-## Angular Learning Management Syaytem
+## Angular Learning Management System
 
 ### Installation:
 If you are using Docker  
