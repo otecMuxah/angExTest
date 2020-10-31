@@ -1,0 +1,45 @@
+<form class="filter-form" #filterForm="ngForm">
+    <div>
+        <h4>Filter by:</h4>
+        <mat-form-field appearance="fill">
+            <mat-label>Course Status</mat-label>
+            <mat-select [(ngModel)]="filter.status" name="status">
+                <mat-option *ngFor="let status of availableStatuses" [value]="status">{{
+                    status | uppercase
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-flat-button (click)="filter.status = ''">Clear</button>
+    </div>
+    <mat-form-field class="lms-full-width">
+        <mat-label>Search courses</mat-label>
+        <input matInput placeholder="Search courses" [(ngModel)]="filter.term" name="term" />
+    </mat-form-field>
+</form>
+<table *ngIf="(courses$ | async)?.length" mat-table [dataSource]="courses$ | async" [trackBy]="listTrackBy">
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="imageUrl">
+        <th mat-header-cell *matHeaderCellDef>Image</th>
+        <td mat-cell *matCellDef="let element"><img src="{{ element.imageUrl }}" alt="Course image" /></td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+            <a routerLink="{{ '/courses/' + element.id }}" routerLinkActive="active">{{ element.name }}</a>
+            <lms-instructor-list [instructors]="element.instructors"></lms-instructor-list>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-stroked-button disabled>{{ element.status }}</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<div *ngIf="!(courses$ | async)?.length">There is no information to display</div>

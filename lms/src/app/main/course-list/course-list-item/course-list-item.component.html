@@ -1,0 +1,69 @@
+<a mat-flat-button color="primary" routerLink="{{ '/courses/' }}" routerLinkActive="active">Back to list</a>
+
+<form [formGroup]="courseForm" class="form">
+    <div class="section">
+        <mat-form-field class="lms-form-field">
+            <mat-label>Course name</mat-label>
+            <input color="primary" matInput type="text" formControlName="name" name="name" />
+            <button
+                mat-button
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="courseForm.get('name').setValue('')"
+            >
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <div class="section">
+        <mat-form-field class="lms-form-field">
+            <mat-label>Course status</mat-label>
+            <mat-select color="primary" formControlName="status" name="status">
+                <mat-option *ngFor="let status of courseListService.availableStatuses$ | async" [value]="status">
+                    {{ status }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="section">
+        <mat-label>Course images</mat-label>
+        <div class="gallery">
+            <mat-card *ngFor="let image of course?.images" class="gallery-card">
+                <mat-card-content>
+                    <img [src]="image" alt="Course image" />
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="section">
+        <mat-form-field class="lms-chip-list">
+            <mat-chip-list formControlName="instructors" #chipList aria-label="Instructor selection">
+                <mat-chip
+                    *ngFor="let instructor of courseForm.get('instructors')?.value"
+                    [selectable]="true"
+                    [removable]="true"
+                    (removed)="removeInstructor(instructor)"
+                >
+                    {{ instructor.name }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input
+                    name="instructor"
+                    placeholder="Instructor(s)"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                />
+            </mat-chip-list>
+
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedInstructor($event)">
+                <mat-option
+                    *ngFor="let instructor of courseListService.availableInstructors$ | async"
+                    [value]="instructor"
+                >
+                    {{ instructor.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+</form>

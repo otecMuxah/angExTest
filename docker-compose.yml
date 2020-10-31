@@ -1,0 +1,10 @@
+version: '3'
+services:
+  lms-server:
+    build:
+      context: .
+    ports:
+      - "3080:3080"
+    container_name: lms-api
+    volumes:
+       - ./src:/usr/src/app/src

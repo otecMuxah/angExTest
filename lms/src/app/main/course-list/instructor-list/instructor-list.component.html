@@ -1,0 +1,6 @@
+<div *ngIf="instructors.length" class="container">
+    <span class="title">Instructors: </span>
+    <span class="instructor" *ngFor="let instructor of instructors; let last = last">
+        {{ instructor.name }}{{ !last ? ', ' : '' }}
+    </span>
+</div>
