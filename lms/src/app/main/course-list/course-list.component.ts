@@ -57,9 +57,9 @@ export class CourseListComponent extends DestroyableComponent implements OnInit,
     private filterCoursesByTermAndStatus(courses: CourseShortInfo[], filter: CourseListFilter): CourseShortInfo[] {
         return courses.filter((course) => {
             return (
-                (course.name.toLocaleLowerCase().indexOf(filter.term.toLocaleLowerCase()) !== -1
-                    || this.filterByAuthor(course, filter.term))
-                    && course.status.toLocaleLowerCase().indexOf(filter.status.toLocaleLowerCase()) !== -1
+                (course.name.toLocaleLowerCase().indexOf(filter.term.toLocaleLowerCase()) !== -1 ||
+                    this.filterByAuthor(course, filter.term)) &&
+                course.status.toLocaleLowerCase().indexOf(filter.status.toLocaleLowerCase()) !== -1
             );
         });
     }
