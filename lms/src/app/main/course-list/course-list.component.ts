@@ -19,7 +19,7 @@ export const COURSE_LIST_PAGE_TITLE = 'Courses';
 })
 export class CourseListComponent extends DestroyableComponent implements OnInit, AfterViewInit {
     @ViewChild('filterForm')
-    public form: NgForm | undefined;
+    public filterForm: NgForm | undefined;
 
     public filter: CourseListFilter = {
         term: '',
@@ -45,7 +45,7 @@ export class CourseListComponent extends DestroyableComponent implements OnInit,
     }
 
     public ngAfterViewInit(): void {
-        this.form?.form?.valueChanges
+        this.filterForm?.form?.valueChanges
             .pipe(debounceTime(200), takeUntil(this.destroy$$))
             .subscribe((filter: CourseListFilter) => this.filter$$.next(filter));
     }
