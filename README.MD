@@ -13,6 +13,8 @@ access - localhost:4200
 - Angular 10
 - Angular Material
 - ExpressJS
-- Docker
+- Docker, docker-compose
 - Optimizations (lazy-loading, trackBy, async pipe, changeDetector onPush)
 - Jasmine/Karma testing
+- TypeScript strict mode for code quality
+- Prettier for code quality

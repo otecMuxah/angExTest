@@ -71,14 +71,12 @@ describe('CourseListComponent', () => {
     });
 
     it('should create list of courses', () => {
-        fixture.detectChanges();
         component.courses$.subscribe((courses) => {
             expect(courses[0]?.id).toEqual(88);
         });
     });
 
-    it('should create filtered list of courses', () => {
-        fixture.detectChanges();
+    it('should create filtered list of courses by status', () => {
         component.filter = {
             term: '',
             status: 'PUBLISHED',
@@ -89,7 +87,6 @@ describe('CourseListComponent', () => {
         });
     });
     it('should search courses by course name', () => {
-        fixture.detectChanges();
         component.filter = {
             term: 'accounting',
             status: '',
@@ -100,7 +97,6 @@ describe('CourseListComponent', () => {
         });
     });
     it('should search courses by instructor name', () => {
-        fixture.detectChanges();
         component.filter = {
             term: 'will smith',
             status: '',
@@ -109,5 +105,10 @@ describe('CourseListComponent', () => {
         component.courses$.subscribe((courses) => {
             expect(courses[0]?.instructors[0].name).toEqual('Will Smith');
         });
+    });
+    it('should render list of courses', () => {
+        const compiled = fixture.debugElement.nativeElement;
+        const el = compiled.querySelector('a.course-link');
+        expect(el.innerHTML).toEqual('Fundamentals of Credit');
     });
 });

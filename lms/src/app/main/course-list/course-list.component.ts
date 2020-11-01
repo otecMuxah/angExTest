@@ -4,7 +4,7 @@ import { CourseShortInfo } from './models/course-short-info.model';
 import { CourseListService } from './services/course-list.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
-import { Filter } from './models/course-list-state.model';
+import { CourseListFilter } from './models/course-list-filter.model';
 import { DestroyableComponent } from '../shared/components/destroyable.component';
 import { MainTitleService } from '../service/main-title.service';
 import { CourseListInstructor } from './models/course-list-instructor.model';
@@ -21,16 +21,16 @@ export class CourseListComponent extends DestroyableComponent implements OnInit,
     @ViewChild('filterForm')
     public form: NgForm | undefined;
 
-    public filter: Filter = {
+    public filter: CourseListFilter = {
         term: '',
         status: '',
     };
 
     public displayedColumns = ['id', 'imageUrl', 'name', 'status'];
-    public availableStatuses: string[] = [];
+    public availableStatuses$: Observable<string[]> = this.courseListService.availableStatuses$;
 
     public courses$: Observable<CourseShortInfo[]> = new Observable<CourseShortInfo[]>();
-    public filter$$: BehaviorSubject<Filter> = new BehaviorSubject(this.filter);
+    public filter$$: BehaviorSubject<CourseListFilter> = new BehaviorSubject(this.filter);
 
     constructor(private courseListService: CourseListService, private titleService: MainTitleService) {
         super();
@@ -47,19 +47,19 @@ export class CourseListComponent extends DestroyableComponent implements OnInit,
     public ngAfterViewInit(): void {
         this.form?.form?.valueChanges
             .pipe(debounceTime(200), takeUntil(this.destroy$$))
-            .subscribe((filter: Filter) => this.filter$$.next(filter));
+            .subscribe((filter: CourseListFilter) => this.filter$$.next(filter));
     }
 
     public listTrackBy(index: number, item: CourseShortInfo): number {
         return item.id;
     }
 
-    private filterCoursesByTermAndStatus(courses: CourseShortInfo[], filter: Filter): CourseShortInfo[] {
+    private filterCoursesByTermAndStatus(courses: CourseShortInfo[], filter: CourseListFilter): CourseShortInfo[] {
         return courses.filter((course) => {
             return (
-                (course.name.toLocaleLowerCase().indexOf(filter.term.toLocaleLowerCase()) !== -1 ||
-                    this.filterByAuthor(course, filter.term)) &&
-                course.status.toLocaleLowerCase().indexOf(filter.status.toLocaleLowerCase()) !== -1
+                (course.name.toLocaleLowerCase().indexOf(filter.term.toLocaleLowerCase()) !== -1
+                    || this.filterByAuthor(course, filter.term))
+                    && course.status.toLocaleLowerCase().indexOf(filter.status.toLocaleLowerCase()) !== -1
             );
         });
     }
