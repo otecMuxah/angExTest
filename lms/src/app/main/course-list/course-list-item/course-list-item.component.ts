@@ -53,15 +53,15 @@ export class CourseListItemComponent extends DestroyableComponent implements OnI
 
     selectedInstructor(event: MatAutocompleteSelectedEvent): void {
         const instructorsControl = this.courseForm.get('instructors');
-        const toSet = [...instructorsControl.value, event.option.value];
-        instructorsControl.setValue(toSet);
+        const toSet = [...instructorsControl?.value, event.option.value];
+        instructorsControl?.setValue(toSet);
     }
 
     removeInstructor(instructorToRemove: CourseListInstructor): void {
         const instructorsControl = this.courseForm.get('instructors');
-        const result: CourseListInstructor[] = instructorsControl.value.filter(
+        const result: CourseListInstructor[] = instructorsControl?.value.filter(
             (instructor: CourseListInstructor) => instructor.name !== instructorToRemove.name
         );
-        instructorsControl.setValue(result);
+        instructorsControl?.setValue(result);
     }
 }
